@@ -23,17 +23,19 @@ using MusicStore.Services;
 	  - Tapes - Artist, AlbumName, Price
 */
 
-var albumInventorySvc = new AlbumInventoryService();
+var fileName = "albums.json";
 
-albumInventorySvc.AddRange(new List<IAlbum>()
-{
-    new CD { Title = "Booker's Dream",  Artist = "Justin" },
-    new CD { Title = "Straight Outta The Highlands", Artist = "Brad" },
-    new CD { Title = "Barely Awake", Artist = "Michael" },
-    new Vinyl { Title = "Strange Daze",  Artist = "The Doors" },
-    new Vinyl { Title = "Best of the Best", Artist = "Frank Sinatra" },
-    new Vinyl { Title = "Kid A", Artist = "Radio Head" }
-});
+var albumInventorySvc = new AlbumInventoryService(fileName);
+
+//albumInventorySvc.AddRange(new List<IAlbum>()
+//{
+//    new CD { Title = "Booker's Dream",  Artist = "Justin" },
+//    new CD { Title = "Straight Outta The Highlands", Artist = "Brad" },
+//    new CD { Title = "Barely Awake", Artist = "Michael" },
+//    new Vinyl { Title = "Strange Daze",  Artist = "The Doors" },
+//    new Vinyl { Title = "Best of the Best", Artist = "Frank Sinatra" },
+//    new Vinyl { Title = "Kid A", Artist = "Radio Head" }
+//});
 
 Console.WriteLine("***Welcome to CL music store***");
 Console.WriteLine("1. List Inventory");
@@ -61,18 +63,18 @@ else if (key == '2')
     Console.WriteLine("3. Cassette");
     var albumToAddInput = Console.ReadLine();
 
-    IAlbum albumToAdd;
+    Album albumToAdd = new Album(); 
 
     switch (albumToAddInput)
     {
         case "1":
-            albumToAdd = new CD();
+            albumToAdd.Category = Category.CD;
             break;
         case "2":
-            albumToAdd = new Vinyl();
+            albumToAdd.Category = Category.Vinyl;
             break;
         case "3":
-            albumToAdd = new Cassette();
+            albumToAdd.Category = Category.Cassette;
             break;
         default:
             throw new ArgumentException("USER DID NOT ENTER A VALID ALBUM TYPE TO ADD");
@@ -115,6 +117,8 @@ else if (key == '2')
 
     albumInventorySvc.Add(albumToAdd);
     Console.WriteLine($"Added {albumToAdd.GetDetails()}");
+
+    albumInventorySvc.Save();
 }
 else if (key == '3')
 {
